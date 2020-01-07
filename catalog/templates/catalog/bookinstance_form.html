@@ -1,0 +1,112 @@
+{% extends "base_generic.html" %} {% block content %}
+<div id="alert-danger" class="hidden" role="alert">请不要忘记选择借书用户。</div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">出租图书</h3>
+  </div>
+  <div class="panel-body">
+    <form action="" method="post">
+      {% csrf_token %}
+<div class="table-responsive ">
+      <table class="table table-bordered table-striped">
+        {{ form.as_table }}
+      </table>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+    </form>
+  </div>
+</div>
+</div>
+<style>
+  .errorlist {
+    background-color: pink;
+  }
+  .helptext {
+    color:blue;
+    font-weight: bold;
+  }
+  .myself {
+    display: inline-block;
+    margin-left:10px;
+  }
+  input.user1,input.user2  {
+    margin-left:20px;
+  }
+</style>
+<script>
+    $(function(){
+$('#id_borrower').after('<input class="user1" placeholder="输入用户名"/> <input type="button" id="user1" class="btn btn-default btn-xs btn-primary" value="查询用户">');
+$('#id_appointment').after('<input class="user2" placeholder="输入用户名"/> <input type="button" id="user2" class="btn btn-default btn-xs btn-primary " value="查询用户">');
+$('#user1').on('click',function(){
+  var user=$('input.user1').val().replace(/[~'!<>@#$%^&*()-+_=:/?]/g, "").trim()
+
+  $.ajax({
+              type: 'POST',
+              url: '/catalog/userQuery/',
+              async : true,
+              data: {
+                  'user': user,
+                  'path':'{{request.path}}',
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              }, success:function(result) {
+                // console.log(result.key)
+                if(!result.key){
+                  if($('#nex').length>0){
+                    $("#nex").remove()}else{
+                  $('#user1').after('<div id="nex" class="alert alert-danger" role="alert">用户不存在</div>');}
+      }else{
+        if($('#nex').length>0){
+                    $("#nex").remove()}
+            $("#id_borrower").val(result.val);}
+      }
+          });
+          
+})
+$('#user2').on('click',function(){
+  var user=$('input.user2').val().replace(/[~'!<>@#$%^&*()-+_=:/?]/g, "").trim()
+
+  $.ajax({
+              type: 'POST',
+              url: '/catalog/userQuery/',
+              async : true,
+              data: {
+                  'user': user,
+                  'path':'{{request.path}}',
+                  csrfmiddlewaretoken: '{{ csrf_token }}'
+              }, success:function(result) {
+                // console.log(result)
+                if(!result.key){
+                  if($('#nex2').length>0){
+                    $("#nex2").remove()}else{
+                  $('#user2').after('<div id="nex2" class="alert alert-danger" role="alert">用户不存在</div>');}
+        }else{
+          if($('#nex2').length>0){
+                    $("#nex2").remove()}
+          $("#id_appointment").val(result.val);}
+      }
+          });
+          
+}) 
+})
+// $(function(){
+//   $('input').prop('required',true)
+//   $('#id_due_back').prop('type','date')
+//   var now = new Date();
+//   var day = ("0" + now.getDate()).slice(-2);
+//   var month = ("0" + (now.getMonth() + 1)).slice(-2);
+//   var today = now.getFullYear()+"-"+month+"-"+day ;
+//   if($('#id_borrower option:selected').text()=="---------"){
+//       $('div.alert-danger').removeAttr('class','hidden')
+//       $('#alert-danger').addClass('alert alert-danger')
+//     }
+    
+//   $('#id_due_back').focus(function(){
+//    if($('#id_status').val()=='o'){ 
+//     $('#id_due_back').val(today)}
+//     })
+   
+// })
+
+</script>
+
+{% endblock %}
