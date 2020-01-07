@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'testInput.apps.TestinputConfig',
     'django_apscheduler',  # 定时执行任务
     'preventconcurrentlogins',
-    'osgeo',
-    'captcha'
+    'captcha',
 ]
 
 MIDDLEWARE = [

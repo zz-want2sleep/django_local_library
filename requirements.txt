@@ -9,8 +9,6 @@ django-preventconcurrentlogins==0.8.2
 django-ranged-response==0.2.0
 django-ratelimit==2.0.0
 django-simple-captcha==0.5.12
-GDAL==3.0.2
-geoip2==3.0.0
 gunicorn==20.0.4
 idna==2.8
 maxminddb==1.5.2
@@ -19,7 +17,6 @@ psycopg2==2.8.4
 pycodestyle==2.5.0
 pytz==2019.3
 requests==2.22.0
-six==1.13.0
 sqlparse==0.3.0
 tzlocal==2.0.0
 urllib3==1.25.7
