@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
     'catalog.apps.CatalogConfig',
     'testInput.apps.TestinputConfig',
     'django_apscheduler',  # 定时执行任务
