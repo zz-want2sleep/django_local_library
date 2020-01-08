@@ -931,9 +931,10 @@ def is_thatone(request):
             # print(session_key_in_visitor_db)
             # print(session_key_in_visitor_db != key_from_cookie)
             # print(key_from_cookie)
-            if request.session.get('oldip') != str(ip):
-                # print(222)
-                return JsonResponse({'code': 0})
+            if request.session.get('oldip'):
+                if request.session.get('oldip') != str(ip):
+                    # print(222)
+                    return JsonResponse({'code': 0})
             
             if request.user.visitor.session_key != key_from_cookie:
                 # request.user.visitor1.session_key = key_from_cookie
