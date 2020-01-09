@@ -9,14 +9,14 @@ from catalog.models import Visitors
 # engine = import_module(settings.SESSION_ENGINE)
 
 
-def is_authenticated(user):
-    """
-    Check if user is authenticated, consider backwards compatibility
-    """
-    if DJANGO_VERSION >= (1, 10, 0):
-        return user.is_authenticated
-    else:
-        return user.is_authenticated()
+# def is_authenticated(user):
+#     """
+#     Check if user is authenticated, consider backwards compatibility
+#     """
+#     if DJANGO_VERSION >= (1, 10, 0):
+#         return user.is_authenticated
+#     else:
+#         return user.is_authenticated()
 
 
 class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin):
@@ -26,7 +26,7 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin):
     """
 
     def process_request(self, request):
-        if is_authenticated(request.user):
+        if request.user.is_authenticated:
             key_from_cookie = request.session.session_key
             if hasattr(request.user, 'visitors'):
                 # print('zzzz1')
@@ -84,3 +84,5 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin):
                 request.session['oldip'] = str(ip)
                 Visitor1.objects.create(
                     user=request.user, session_key=request.session.get('sessionid'), ip=str(ip))
+        else:
+            request.session['zz'] = 'zz'
