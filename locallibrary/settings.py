@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog.apps.CatalogConfig',
+    # 'catalog.apps.CatalogConfig',
+    'catalog',
     'testInput.apps.TestinputConfig',
     'django_apscheduler',
     # 'preventconcurrentlogins',
@@ -63,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
-    # 'catalog.Preventmiddle.PreventConcurrentLoginsMiddleware',
+    'catalog.Preventmiddle.PreventConcurrentLoginsMiddleware',
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
