@@ -6,7 +6,7 @@ from importlib import import_module
 from catalog.models import Visitor1, OldSession, OldIp
 from catalog.models import Visitors
 
-engine = import_module(settings.SESSION_ENGINE)
+# engine = import_module(settings.SESSION_ENGINE)
 
 
 def is_authenticated(user):
