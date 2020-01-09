@@ -1,8 +1,10 @@
+from django.contrib.auth.models import User
+import re
 from django.contrib.auth.models import Group
 from django.forms import ModelForm
-from .models import BookInstance, Author
+from .models import BookInstance, Author, Genre, Language
 from django import forms
-
+from captcha.fields import CaptchaField
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import datetime  # for checking renewal date range.
@@ -75,6 +77,33 @@ class AuthorModelForm(ModelForm):
         fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
         help_texts = {'date_of_birth': _(
             '时间格式：2019/10/04'), 'date_of_death': _('时间格式：2019/10/04'), }
+
+
+class LanguageModelForm(ModelForm):
+    def clean_language(self):
+        return self.cleaned_data.get('language')
+
+    class Meta:
+        model = Language
+        fields = ['language']
+        labels = {'language': _('语言'), }
+        help_texts = {'language': _(
+            '例如：English')}
+
+
+class GenreModelForm(ModelForm):
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if Genre.objects.filter(name=name).count() > 0:
+            raise ValidationError(_('该图书类别已经存在'))
+        return name
+
+    class Meta:
+        model = Genre
+        fields = ['name']
+        labels = {'name': _('图书类别'), }
+        help_texts = {'name': _(
+            '例如：科幻')}
 
 
 class RentOutForm(ModelForm):
@@ -194,3 +223,32 @@ class GroupForm(forms.Form):
             return self.cleaned_data['group']
         else:
             return []
+
+# login and logout forms
+
+
+def email_check(email):
+
+    pattern = re.compile(r"\"?([-a-zA-Z0-9.'?{}]+@\w+\.\w+)\"?")
+    return re.match(pattern, email)
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='账号', max_length=50)
+    password = forms.CharField(label='密码', widget=forms.PasswordInput)
+    captcha = CaptchaField(label="验证码", error_messages={'invalid': '验证码错误'})
+
+    # use clean methods to define custom validation rules
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if email_check(username):
+            filter_result = User.objects.filter(email__exact=username)
+            if not filter_result:
+                raise forms.ValidationError('This emial does not exist')
+        else:
+            filter_result = User.objects.filter(username__exact=username)
+            if not filter_result:
+                raise forms.ValidationError('账号不存在')
+
+        return username

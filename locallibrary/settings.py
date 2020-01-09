@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+import pymysql
 import dj_database_url
 import os
 
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'testInput.apps.TestinputConfig',
     'django_apscheduler',  # 定时执行任务
-    'preventconcurrentlogins',
+    # 'preventconcurrentlogins',
+
     'captcha',
 ]
 
@@ -61,7 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
+    # 'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
+    'locallibrary.preventmiddle.PreventConcurrentLoginsMiddleware',
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
@@ -87,13 +90,24 @@ WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# pymysql.install_as_MySQLdb()
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',   # 数据库引擎
+#         'NAME': 'locallibrary',         # 你要存储数据的库名，事先要创建之
+#         'USER': 'root',         # 数据库用户名
+#         'PASSWORD': 'zhangzhe',     # 密码
+#         'HOST': 'localhost',    # 主机
+#         'PORT': '3306',         # 数据库使用的端口
+#     }
+# }
 
 
 # Password validation
@@ -165,10 +179,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace(
     '\\', '/')  # 设置静态文件路径为主目录下的image文件夹
 # SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
+# SECURE_BROWSER_XSS_FILTER = True
 # SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
+# CSRF_COOKIE_SECURE = True
+# X_FRAME_OPTIONS = 'DENY'
 
 # Heroku: Update database configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -186,6 +200,7 @@ STATIC_URL = '/static/'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-ALLOWED_HOSTS = ['radiant-shelf-32439.herokuapp.com', '127.0.0.1']
+# ALLOWED_HOSTS = ['radiant-shelf-32439.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 # For example:
 # ALLOWED_HOSTS = ['fathomless-scrubland-30645.herokuapp.com','127.0.0.1']

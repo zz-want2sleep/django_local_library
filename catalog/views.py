@@ -2,7 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 import re
 from django.views.generic.base import TemplateView
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import GroupForm
+from .forms import GroupForm,LoginForm,LanguageModelForm,GenreModelForm
 import json
 from .forms import Statistical
 from django.http import JsonResponse
@@ -102,7 +102,7 @@ def group(request):
             for group in groups:
                 group.user_set.set(tuple(user_list))
                 # print(group)
-            return redirect('/admin/auth/user/?e=2')
+            return redirect('/catalog/?e=2')
 # bulk delete users
 @permission_required('auth.delete_user')
 def deleteusers(request):
@@ -115,8 +115,8 @@ def deleteusers(request):
                 try:
                     User.objects.get(username=user).delete()
                 except Exception:
-                    return HttpResponseRedirect('/admin/auth/user/?d=1')
-            return redirect('/admin/auth/user/?e=1')
+                    return HttpResponseRedirect('/catalog/?d=1')
+            return redirect('/catalog/?e=1')
         else:
             nums = int(request.POST.get('nums'))
             firstnum = int(request.POST.get('firstnum'))
@@ -179,7 +179,7 @@ def addusers(request):
                 userextension_list.append(UserExtension1(user=user_pk))
                 # print(User.objects.get(username=user).pk)
             UserExtension1.objects.bulk_create(userextension_list)
-            return redirect('/admin/auth/user/?e=3')
+            return redirect('/catalog/?e=3')
         except Exception:
             request.session['error'] = 'error'
             return redirect(reverse('catalog:addusers'))
@@ -556,8 +556,6 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
         return reverse_lazy('catalog:books')+'?d=1'
 
 # setting popup to add author
-
-
 def p1(request):
 
     if request.method == "GET":
@@ -578,13 +576,123 @@ def p1(request):
             author.save()
 
             # redirect to a new URL:
-            return render(request, "popup_response.html", {"author": author, 'id': author.pk})
+            return render(request, "popup_response.html", {"author": author, 'id': author.pk,'p':'p1'})
+        else:
+            return render(request, "p1.html", {'form': form, })
+def p2(request):
+    id = int(request.GET.get('id'))
+    author =get_object_or_404(Author,pk=id)
+    if request.method == "GET":
+        form = AuthorModelForm(initial={'first_name': author.first_name,'last_name': author.last_name,'date_of_birth':author.date_of_birth,'date_of_death':author.date_of_death },error_class=DivErrorList)
+        return render(request, "p2.html", {'form': form, })
+    elif request.method == "POST":
+                # Create a form instance and populate it with data from the request (binding):
+        form = AuthorModelForm(request.POST, error_class=DivErrorList)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            author.first_name = form.cleaned_data['first_name']
+            author.last_name = form.cleaned_data['last_name']
+            author.date_of_birth = form.cleaned_data['date_of_birth']
+            author.date_of_death = form.cleaned_data['date_of_death']
+            author.save()
+
+            # redirect to a new URL:
+            return render(request, "popup_response.html", {"author": author, 'id': author.pk,'p':'p2'})
+        else:
+            return render(request, "p2.html", {'form': form, })
+def p3(request):
+    id = int(request.GET.get('id'))
+    author =get_object_or_404(Author,pk=id)
+    if request.method == "GET":
+        return render(request, "p3.html", {'author': author, })
+    elif request.method == "POST":
+        author_name = author
+        author_pk = id
+        author.delete()
+        
+        return render(request, "popup_response.html", {"author": author_name, 'id': author_pk,'p':'p3'})
+        
+    return render(request, "p3.html", {'author': author, })
+
+# setting popup to add language
+def l1(request):
+
+    if request.method == "GET":
+        form = LanguageModelForm(error_class=DivErrorList)
+        return render(request, "l1.html", {'form': form, })
+    elif request.method == "POST":
+                # Create a form instance and populate it with data from the request (binding):
+        form = LanguageModelForm(request.POST, error_class=DivErrorList)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            language = Language.objects.create()
+            language.language = form.cleaned_data['language']
+            language.save()
+
+            # redirect to a new URL:
+            return render(request, "popup2_response.html", {"language": language, 'id': language.pk,'p':'p1'})
         else:
             return render(request, "p1.html", {'form': form, })
 
+def l2(request):
+    id = int(request.GET.get('id'))
+    lg = get_object_or_404(Language,pk=id)
+    if request.method == "GET":
+        form = LanguageModelForm(initial={'language':lg.language },error_class=DivErrorList)
+        return render(request, "l2.html", {'form': form, })
+    elif request.method == "POST":
+                # Create a form instance and populate it with data from the request (binding):
+        form = LanguageModelForm(request.POST, error_class=DivErrorList)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            lg.language = form.cleaned_data['language']
+            lg.save()
+
+            # redirect to a new URL:
+            return render(request, "popup2_response.html", {"language": lg, 'id': lg.pk,'p':'p2'})
+        else:
+            return render(request, "l2.html", {'form': form, })
+
+def l3(request):
+    id = int(request.GET.get('id'))
+    lg = get_object_or_404(Language,pk=id)
+    if request.method == "GET":
+        return render(request, "l3.html", {'language':lg.language })
+    elif request.method == "POST":
+        language_name = lg
+        language_pk = id
+        lg.delete()
+        
+        return render(request, "popup2_response.html", {"language":language_name, 'id': language_pk,'p':'p3'})
+        
+    return render(request, "l3.html", {'language':lg.language })
+# setting popup to add language
+def g1(request):
+    if request.method == "GET":
+        form = GenreModelForm(error_class=DivErrorList)
+        return render(request, "g1.html", {'form': form, })
+    elif request.method == "POST":
+                # Create a form instance and populate it with data from the request (binding):
+        form = GenreModelForm(request.POST, error_class=DivErrorList)
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            genre = Genre.objects.create()
+            genre.name = form.cleaned_data['name']
+            genre.save()
+
+            # redirect to a new URL:
+            return render(request, "popup3_response.html", {"genre": genre, 'id': genre.pk,})
+        else:
+            return render(request, "p1.html", {'form': form, })
 # setting update user password
-
-
 class PasswordContextMixin:
     extra_context = None
 
@@ -729,17 +837,23 @@ def appointmentBook(request, pk, id, pk1):
     nums = BookInstance.objects.filter(appointment__exact=request.user)
     if (len(nums) >= 5):
         return redirect(reverse_lazy('catalog:book-detail', args=(pk,)) + '?success=5')
-    bookinst = get_object_or_404(BookInstance, id=id)
-    # print(bookinst.appointment)
-    if bookinst.appointment != None:
-        return redirect(reverse_lazy('catalog:book-detail', args=(pk,)) + '?success=2')
-    else:
-        bookinst.appointment = get_object_or_404(User, pk=pk1)
-        bookinst.status = 'r'
-        bookinst.appointment_time = datetime.date.today()
-        bookinst.save()
-        return redirect(reverse_lazy('catalog:book-detail', args=(pk,)) + '?success=3')
-    return HttpResponseRedirect(reverse_lazy('catalog:book-detail', args=(pk,)))
+    while True:
+        bookinst = get_object_or_404(BookInstance,id=id)
+        # print(bookinst.appointment)
+        if bookinst.appointment != None:
+            return redirect(reverse_lazy('catalog:book-detail', args=(pk,)) + '?success=2')
+        else:
+            user = get_object_or_404(User, pk=pk1)
+            result = BookInstance.objects.filter(id=id).filter(status='a').update(**{'status':'r','appointment':user,'appointment_time':datetime.date.today()})
+            if result == 0:
+                continue
+            break
+            # bookinst.appointment = get_object_or_404(User, pk=pk1)
+            # bookinst.status = 'r'
+            # bookinst.appointment_time = datetime.date.today()
+            # bookinst.save()
+    return redirect(reverse_lazy('catalog:book-detail', args=(pk,)) + '?success=3')
+    # return HttpResponseRedirect(reverse_lazy('catalog:book-detail', args=(pk,)))
 
 
 # auto clear over_appointment
@@ -1039,7 +1153,7 @@ def loginCaptcha(request):
         result['key'] = CaptchaStore.generate_key()
         result['image_url'] = captcha_image_url(result['key'])
         return JsonResponse(result)
-    return redirect('/accounts/login')
+    return redirect('catalog/login_1/')
 
 #jquery user query
 def userQuery(request):
@@ -1066,3 +1180,47 @@ def userQuery(request):
         
         return JsonResponse(result)
     return redirect(reverse_lazy('catalog:all-borrowed'))
+    
+from django.contrib import auth
+#login and logout views
+from ratelimit.decorators import ratelimit
+@ratelimit(key='post:username', rate='5/m',method='POST', block=True)
+@ratelimit(key='ip', rate='5/m',method='POST', block=True)
+def login(request):
+    '''
+    login
+    '''
+    if request.user.is_authenticated:
+        HttpResponseRedirect(reverse('catalog:index'))
+    next=''
+    if request.GET.get('next'):
+        next = request.GET.get('next')
+        # print(next)
+    if request.method == 'POST':
+        
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = auth.authenticate(username=username, password=password)
+            if user is not None and user.is_active:
+                auth.login(request, user)
+                if next and next != '/catalog/login_1/':
+                    return HttpResponseRedirect(next)
+                return HttpResponseRedirect(reverse('catalog:index'))
+            else:
+                return render(request, 'catalog/login_1.html', {'form': form, 'message': '密码错误，请再次尝试','next':next})
+        
+    else:
+        form = LoginForm()
+    return render(request,'catalog/login_1.html',{'form': form,'next':next})
+
+
+
+@login_required
+def logout(request):
+    auth.logout(request)
+    next=''
+    if request.GET.get('next',''):
+        next =request.GET.get('next','')
+    return HttpResponseRedirect(next)

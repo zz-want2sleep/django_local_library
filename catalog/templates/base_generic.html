@@ -73,9 +73,9 @@ a,a:link,a:visited {
               {%if user.email%}
               <li role="presentation" class="{% if request.path == '/catalog/my_appointment/' or request.path|truncatechars:26 == '/catalog/my_appointment/s/' %}active{% endif %}"><a href="{% url 'catalog:my-appointment' %}"><span class="glyphicon glyphicon-shopping-cart"></span> 预约的图书</a></li>
               {%endif%}
-              <li role="presentation" class="bg-danger" ><a href="{% url 'logout'%}?next={{request.path}}"><span class="text-danger"><span class="glyphicon glyphicon-log-out"></span> 退出登录</span></a></li>   
+              <li role="presentation" class="bg-danger" ><a href="{% url 'catalog:logout'%}?next={{request.path}}"><span class="text-danger"><span class="glyphicon glyphicon-log-out"></span> 退出登录</span></a></li>   
             {% else %}
-              <li role="presentation" class="bg-info login"><a href="{% url 'login'%}?next={{request.path}}"><span class="text-primary"><span class="glyphicon glyphicon-log-in"></span> 账号登录</span></a></li>   
+              <li role="presentation" class="bg-info login"><a href="{% url 'catalog:login'%}?next={{request.path}}"><span class="text-primary"><span class="glyphicon glyphicon-log-in"></span> 账号登录</span></a></li>   
             {% endif %}
           </ul>
 
@@ -115,7 +115,19 @@ a,a:link,a:visited {
                   </li>
                   
                   <li role="presentation" class="{% if request.path == '/admin/' %}active{% endif %}"><a href="/admin/">系统管理员的快乐小屋</a></li>
-                  
+                  {%if user.is_authenticated and user.is_superuser%}
+                  <li role="presentation" class="{% if request.path == '/admin/' %}active{% endif %}"><button style="width:100%;" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="text-primary"><span class="glyphicon glyphicon-cog"></span> 
+                    用户管理</span>
+                    <span class="caret"></span>
+                  </button width="100%">
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="{%url 'catalog:addusers'%}"><span class="text-success"><span class="glyphicon glyphicon-plus"></span> 添加用户</span></a></li>
+                    <li><a href="{%url 'catalog:deleteusers'%}"><span class="text-danger"><span class="glyphicon glyphicon-remove"></span> 删除用户</span></a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{%url 'catalog:group'%}"><span class="text-warning"><span class="glyphicon glyphicon-wrench"></span> 用户分组</span></a></li>
+                  </ul></li>
+                  {%endif%}
                 </ul>
                 {% endif %}
         </div>

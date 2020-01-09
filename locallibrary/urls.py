@@ -43,7 +43,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('fav.ico', RedirectView.as_view(url='/static/fav.ico')), ]
+    url(r'^fav\.ico$', RedirectView.as_view(url=r'static/image/fav.ico')), ]
 
 urlpatterns += [
     url(r'^media/(?P<path>.*)$', serve,

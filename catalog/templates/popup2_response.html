@@ -11,15 +11,15 @@
   <body>
     <script>
       (function() {
-        var name = "{{ author }}";
+        var name = "{{ language }}";
         var id = "{{id}}";
         var p = "{{p}}";
         if (p == "p1") {
-          window.opener.p1_receive_func(name, id);
+          window.opener.l1_receive_func(name, id);
         } else if (p == "p2") {
-          window.opener.p2_receive_func(name, id);
+          window.opener.l2_receive_func(name, id);
         } else if (p == "p3") {
-          window.opener.p3_receive_func(name, id);
+          window.opener.l3_receive_func(name, id);
         }
 
         window.close();

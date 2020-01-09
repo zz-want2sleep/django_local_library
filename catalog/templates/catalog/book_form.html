@@ -28,29 +28,209 @@
     color:blue;
     font-weight: bold;
   }
-  .myself {
+  .myself,.myself_1,.myself_2 {
     display: inline-block;
     margin-left:10px;
   }
+  .myself_2 {
+    vertical-align:100%;
+    }
 </style>
 <script>
   $(function(){
+
 $('#id_author').after($('<a href="#" class="myself text-success"><span class="glyphicon glyphicon-plus"></span></a>'));
   })
   $(document).ready(function(){
+
   $(".myself").click(function(){
-    let left = window.screen.availWidth-400
+    if($('#myself1').length==0||$('#myself2').length==0){
+    $('.myself').after(' <a href="#" id="myself1" class="myself1 text-warning"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" id="myself2" class="myself2 text-danger"><span class="glyphicon glyphicon-remove"></span></a>')
+  
+    $("#myself1").click(function(){ 
+    var id = $('#id_author option:selected').val();
+    if(id==''){
+      alert('请先选择一个作者')
+    }else{
+    window.open(
+          "/catalog/p2?id="+id,
+          "修改作者信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  }
+}
+);
+  $("#myself2").click(function(){
+    var id = $('#id_author option:selected').val();
+    if(id==''){
+      alert('请先选择一个作者')
+    }else{
+
+    window.open(
+          "/catalog/p3?id="+id,
+          "删除作者信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  }
+}
+);
+  }
     window.open(
           "/catalog/p1",
           "添加作者信息",
-          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,left="+left+""
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
         );
   });
+  
+  $("#id_author").on('change',function(){
+if($('#myself1').length==0||$('#myself2').length==0){
+if($("#id_author option:selected").val()!=''){
+$('.myself').after(' <a href="#" id="myself1" class="myself1 text-warning"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" id="myself2" class="myself2 text-danger"><span class="glyphicon glyphicon-remove"></span></a>')
+
+
+$("#myself1").click(function(){ 
+    var id = $('#id_author option:selected').val();
+    window.open(
+          "/catalog/p2?id="+id,
+          "修改作者信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+  $("#myself2").click(function(){
+    var id = $('#id_author option:selected').val();
+    window.open(
+          "/catalog/p3?id="+id,
+          "删除作者信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+
+}
+}
+})
+
+
+  
+
 });
 function p1_receive_func(data,id) {
-
   $('#id_author option').children("option:selected").prop("selected", false)
         $("#id_author").append('<option selected value='+id+'>'+data+'</option>');
+      }
+function p2_receive_func(data,id) {
+  $('#id_author option:selected').attr('value',id).text(data)
+      }
+function p3_receive_func(data,id) {
+  $('#id_author option:selected').remove()
+      }
+</script>
+<script>
+  $(function(){
+
+$('#id_language').after($('<a href="#" class="myself_1 text-success"><span class="glyphicon glyphicon-plus"></span></a>'));
+  })
+  $(document).ready(function(){
+
+  $(".myself_1").click(function(){
+    if($('#myself1_1').length==0||$('#myself2_2').length==0){
+    $('.myself_1').after(' <a href="#" id="myself1_1" class="myself1_1 text-warning"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" id="myself2_2" class="myself2_2 text-danger"><span class="glyphicon glyphicon-remove"></span></a>')
+  
+    $("#myself1_1").click(function(){ 
+    var id = $('#id_language option:selected').val();
+    if(id==''){
+      alert('请先选择一门语言')
+    }else{
+    window.open(
+          "/catalog/l2?id="+id,
+          "修改语言信息",
+          "height=200,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  }
+}
+);
+  $("#myself2_2").click(function(){
+    var id = $('#id_language option:selected').val();
+    if(id==''){
+      alert('请先选择一门语言')
+    }else{
+
+    window.open(
+          "/catalog/l3?id="+id,
+          "删除语言信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  }
+}
+);
+  }
+    window.open(
+          "/catalog/l1",
+          "添加语言信息",
+          "height=200,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+  
+  $("#id_language").on('change',function(){
+if($('#myself1_1').length==0||$('#myself2_2').length==0){
+if($("#id_language option:selected").val()!=''){
+  $('.myself_1').after(' <a href="#" id="myself1_1" class="myself1_1 text-warning"><span class="glyphicon glyphicon-pencil"></span></a> <a href="#" id="myself2_2" class="myself2_2 text-danger"><span class="glyphicon glyphicon-remove"></span></a>')
+
+
+$("#myself1_1").click(function(){ 
+    var id = $('#id_language option:selected').val();
+    window.open(
+          "/catalog/l2?id="+id,
+          "修改语言信息",
+          "height=200,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+  $("#myself2_2").click(function(){
+    var id = $('#id_language option:selected').val();
+    window.open(
+          "/catalog/l3?id="+id,
+          "删除语言信息",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+
+}
+}
+})
+
+
+  
+
+});
+function l1_receive_func(data,id) {
+  $('#id_language option').children("option:selected").prop("selected", false)
+        $("#id_language").append('<option selected value='+id+'>'+data+'</option>');
+      }
+function l2_receive_func(data,id) {
+  $('#id_language option:selected').attr('value',id).text(data)
+      }
+function l3_receive_func(data,id) {
+  $('#id_language option:selected').remove()
+      }
+</script>
+<script>
+ $(function(){
+
+$('#id_genre').after($('<a href="#" class="myself_2 text-success"><span class="glyphicon glyphicon-plus"></span></a>'));
+  })
+  $(document).ready(function(){
+
+  $(".myself_2").click(function(){
+    window.open(
+          "/catalog/g1",
+          "添加图书类别",
+          "height=400,width=400,toolbar =no, menubar=no, scrollbars=no, resizable=no, location=no, status=no,top=100,left=20"
+        );
+  });
+  
+});
+function g1_receive_func(data,id) {
+  // $('#id_genre option').children("option:selected").prop("selected", false)
+        $("#id_genre").append('<option selected value='+id+'>'+data+'</option>');
       }
 </script>
 {% endblock %}

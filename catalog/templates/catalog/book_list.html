@@ -13,6 +13,7 @@
         {% if user.is_authenticated and perms.catalog.can_mark_returned%}
        <a class="btn btn-primary" style="margin-left: 20px;" href="{%url 'catalog:book_create' %}"><span class="glyphicon glyphicon-plus"></span> <span style="color: white; font-weight: bold; text-decoration: none;">添加图书</span></a>
       {% endif %}
+      {%if genre %}
       <div class="btn-group" style="margin-left:20px;">
         <button type="button" class="btn btn-primary">图书类别</button>
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,6 +31,7 @@
           <!-- <li><a href="#">Separated link</a></li> -->
         </ul>
       </div>
+      {%endif%}
       </div>
       <!-- /input-group -->
     </div>

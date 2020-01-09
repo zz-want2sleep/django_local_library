@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 import uuid  # Required for unique book instances
@@ -238,3 +239,12 @@ class OldSession(models.Model):
 
 class OldIp(models.Model):
     ip = models.CharField(null=True, max_length=100)
+
+
+# preventmiddle
+
+
+class Visitor(models.Model):
+    user = models.OneToOneField(
+        User, null=False, related_name='visitor', on_delete=models.CASCADE)
+    session_key = models.CharField(null=False, max_length=40)

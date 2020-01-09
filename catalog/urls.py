@@ -61,6 +61,18 @@ urlpatterns += [
 # setting popup to add author
 urlpatterns += [
     path(r'p1/', views.p1, name="popup"),
+    path(r'p2/', views.p2, name="popup2"),
+    path(r'p3/', views.p3, name="popup3"),
+]
+# setting popud to add language
+urlpatterns += [
+    path(r'l1/', views.l1, name='l1'),
+    path(r'l2/', views.l2, name='l2'),
+    path(r'l3/', views.l3, name='l3'),
+]
+# setting popud to add genre
+urlpatterns += [
+    path(r'g1/', views.g1, name='g1')
 ]
 
 # setting update user password
@@ -132,4 +144,9 @@ urlpatterns += [
 # jquery user query
 urlpatterns += [
     path(r'userQuery/', views.userQuery, name="userQuery")
+]
+#login and logout
+urlpatterns += [
+    path(r'login_1/', views.login, name='login'),
+    path(r'logout_1/', views.logout, name='logout'),
 ]
