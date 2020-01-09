@@ -187,6 +187,13 @@ class HistoryByManager(models.Model):
 
     class Meta:
         ordering = ['rent_time']
+# preventmiddle
+
+
+class Visitor(models.Model):
+    user = models.OneToOneField(
+        User, null=False, related_name='visitor', on_delete=models.CASCADE)
+    session_key = models.CharField(null=False, max_length=40)
 
 
 class Visitor1(models.Model):
@@ -239,10 +246,3 @@ class OldSession(models.Model):
 
 class OldIp(models.Model):
     ip = models.CharField(null=True, max_length=100)
-
-
-# preventmiddle
-class Visitor(models.Model):
-    user = models.OneToOneField(
-        User, null=False, related_name='visitor', on_delete=models.CASCADE)
-    session_key = models.CharField(null=False, max_length=40)
