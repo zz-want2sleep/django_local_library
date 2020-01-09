@@ -1,10 +1,10 @@
-from django.contrib.sessions.models import Session
-from django.conf import settings
-from django import VERSION as DJANGO_VERSION
+# from django.contrib.sessions.models import Session
+# from django.conf import settings
+# from django import VERSION as DJANGO_VERSION
 from django.utils import deprecation
 # from importlib import import_module
-from catalog.models import Visitor1, OldSession, OldIp
-from catalog.models import Visitors
+from .models import Visitor1, OldSession, OldIp
+from .models import Visitors
 
 # engine = import_module(settings.SESSION_ENGINE)
 

@@ -1040,22 +1040,18 @@ def is_thatone(request):
         key_from_cookie = request.session.session_key
         # print(request.session.get('sessionid'))
         # print(hasattr(request.user, 'visitor1'))
-        if hasattr(request.user, 'visitors'):
-            # session_ip = request.user.visitor1.ip
-            # print(session_key_in_visitor_db)
-            # print(session_key_in_visitor_db != key_from_cookie)
-            # print(key_from_cookie)
-            if request.session.get('oldip'):
-                if request.session.get('oldip') != str(ip):
-                    # print(222)
-                    return JsonResponse({'code': 0})
+
+        if request.session.get('oldip',''):
+            if request.session.get('oldip') != str(ip):
+                # print(222)
+                return JsonResponse({'code': 0})
             
-            if request.user.visitors.session_key != key_from_cookie:
-                # request.user.visitor1.session_key = key_from_cookie
-                # request.user.visitor1.save()
-                # print(1111)
-                return JsonResponse({'code': 2})
-            return JsonResponse({'code': 1})
+        if request.user.visitors.session_key != key_from_cookie:
+            # request.user.visitor1.session_key = key_from_cookie
+            # request.user.visitor1.save()
+            # print(1111)
+            return JsonResponse({'code': 2})
+        return JsonResponse({'code': 1})
 
     else:
         return JsonResponse({'code': 1})
