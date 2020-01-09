@@ -242,8 +242,6 @@ class OldIp(models.Model):
 
 
 # preventmiddle
-
-
 class Visitor(models.Model):
     user = models.OneToOneField(
         User, null=False, related_name='visitor', on_delete=models.CASCADE)

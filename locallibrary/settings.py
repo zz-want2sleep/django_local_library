@@ -48,9 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'catalog.apps.CatalogConfig',
     'testInput.apps.TestinputConfig',
-    'django_apscheduler',  # 定时执行任务
+    'django_apscheduler',
     # 'preventconcurrentlogins',
-
     'captcha',
 ]
 
@@ -200,7 +199,7 @@ STATIC_URL = '/static/'
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# ALLOWED_HOSTS = ['radiant-shelf-32439.herokuapp.com', '127.0.0.1']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['radiant-shelf-32439.herokuapp.com', '127.0.0.1']
+# ALLOWED_HOSTS = ['*']
 # For example:
-# ALLOWED_HOSTS = ['fathomless-scrubland-30645.herokuapp.com','127.0.0.1']
+# ALLOWED_HOSTS = ['fathomless-scrubland-30645.herokuapp.com', '127.0.0.1']
