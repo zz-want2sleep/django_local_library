@@ -4,7 +4,7 @@ from django import VERSION as DJANGO_VERSION
 from django.utils import deprecation
 from importlib import import_module
 from catalog.models import Visitor1, OldSession, OldIp
-from catalog.models import Visitor
+from catalog.models import Visitors
 
 engine = import_module(settings.SESSION_ENGINE)
 
@@ -28,10 +28,10 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin if DJANGO_VE
     def process_request(self, request):
         if is_authenticated(request.user):
             key_from_cookie = request.session.session_key
-            if hasattr(request.user, 'visitor'):
+            if hasattr(request.user, 'visitors'):
                 # print('zzzz1')
                 # print(hasattr(request.user, 'visitor'))
-                session_key_in_visitor_db = request.user.visitor.session_key
+                session_key_in_visitor_db = request.user.visitors.session_key
                 request.session['sessionid'] = session_key_in_visitor_db
                 # print(request.session.get('sessionid'))
                 # print(obj,create)
@@ -44,8 +44,8 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin if DJANGO_VE
 
                         # engine.SessionStore(session_key_in_visitor_db).delete()
                         # print(key_from_cookie)
-                        request.user.visitor.session_key = key_from_cookie
-                        request.user.visitor.save()
+                        request.user.visitors.session_key = key_from_cookie
+                        request.user.visitors.save()
                         # print(request.user.visitor.session_key)
                         # (obj, created) = OldSession.objects.get_or_create(session_key=key_from_cookie,
                         # defaults={'session_key': key_from_cookie})
@@ -55,8 +55,8 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin if DJANGO_VE
                 request.session['sessionid'] = key_from_cookie
                 (obj, created) = OldSession.objects.get_or_create(
                     session_key=key_from_cookie, defaults={'session_key': key_from_cookie})
-                Visitor.objects.create(user=request.user,
-                                       session_key=key_from_cookie)
+                Visitors.objects.create(user=request.user,
+                                        session_key=key_from_cookie)
             x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
             if x_forwarded_for:
                 ip = x_forwarded_for.split(',')[0]  # 所以这里是真实的ip
