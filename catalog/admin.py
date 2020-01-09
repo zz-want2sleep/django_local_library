@@ -134,5 +134,5 @@ admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
 
-admin.site.site_he = "图书管理平台"
+admin.site.site_header = "图书管理平台"
 admin.site.site_title = "图书管理员"
