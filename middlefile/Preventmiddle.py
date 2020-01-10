@@ -3,9 +3,10 @@
 # from django import VERSION as DJANGO_VERSION
 from django.utils import deprecation
 # from importlib import import_module
-from catalog.models import Visitor1, OldSession, OldIp
 from catalog.models import Visitors
-
+from catalog.models import Visitor1
+from catalog.models import OldSession
+from catalog.models import OldIp
 # engine = import_module(settings.SESSION_ENGINE)
 
 
