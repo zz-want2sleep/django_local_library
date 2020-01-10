@@ -187,28 +187,28 @@ class HistoryByManager(models.Model):
 
     class Meta:
         ordering = ['rent_time']
-# preventmiddle
+# # preventmiddle
 
 
-class Visitors(models.Model):
-    user = models.OneToOneField(
-        User, null=False, related_name='visitors', on_delete=models.CASCADE)
-    session_key = models.CharField(null=True, max_length=100)
+# class Visitors(models.Model):
+#     user = models.OneToOneField(
+#         User, null=False, related_name='visitors', on_delete=models.CASCADE)
+#     session_key = models.CharField(null=True, max_length=100)
 
 
-class Visitor1(models.Model):
-    user = models.OneToOneField(
-        User, null=False, related_name='visitor1', on_delete=models.CASCADE)
-    session_key = models.CharField(null=True, max_length=40)
-    ip = models.CharField(null=True, max_length=200)
+# class Visitor1(models.Model):
+#     user = models.OneToOneField(
+#         User, null=False, related_name='visitor1', on_delete=models.CASCADE)
+#     session_key = models.CharField(null=True, max_length=40)
+#     ip = models.CharField(null=True, max_length=200)
 
 
-@receiver(post_save, sender=User)
-def handler_user_visitors(sender, instance, created, **kwargs):
-    if created:  # 如果是第一次创建user对象，就创建一个visitors对象进行绑定
-        Visitors.objects.create(user=instance)
-    else:  # 如果是修改user对象，那么也要将visitors进行保存
-        instance.visitors.save()
+# @receiver(post_save, sender=User)
+# def handler_user_visitors(sender, instance, created, **kwargs):
+#     if created:  # 如果是第一次创建user对象，就创建一个visitors对象进行绑定
+#         Visitors.objects.create(user=instance)
+#     else:  # 如果是修改user对象，那么也要将visitors进行保存
+#         instance.visitors.save()
 
 
 # information
@@ -247,14 +247,14 @@ def handler_user_extension(sender, instance, created, **kwargs):
         instance.extension.save()
 
 
-# old session
+# # old session
 
 
-class OldSession(models.Model):
-    session_key = models.CharField(null=True, max_length=150)
+# class OldSession(models.Model):
+#     session_key = models.CharField(null=True, max_length=150)
 
-# old ip
+# # old ip
 
 
-class OldIp(models.Model):
-    ip = models.CharField(null=True, max_length=100)
+# class OldIp(models.Model):
+#     ip = models.CharField(null=True, max_length=100)

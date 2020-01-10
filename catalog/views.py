@@ -6,7 +6,7 @@ from .forms import GroupForm,LoginForm,LanguageModelForm,GenreModelForm
 import json
 from .forms import Statistical
 from django.http import JsonResponse
-from .models import Visitor1,OldSession,OldIp
+# from .models import Visitor1,OldSession,OldIp
 import os
 from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 from apscheduler.schedulers.background import BackgroundScheduler
