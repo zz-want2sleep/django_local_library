@@ -201,6 +201,22 @@ class Visitor1(models.Model):
         User, null=False, related_name='visitor1', on_delete=models.CASCADE)
     session_key = models.CharField(null=True, max_length=40)
     ip = models.CharField(null=True, max_length=200)
+
+@receiver(post_save, sender=User)
+def handler_user_visitors(sender, instance, created, **kwargs):
+    if created:  # 如果是第一次创建user对象，就创建一个visitors对象进行绑定
+        Visitors.objects.create(user=instance)
+    else:  # 如果是修改user对象，那么也要将visitors进行保存
+        instance.visitors.save()
+
+@receiver(post_save, sender=User)
+def handler_user_visitor1(sender, instance, created, **kwargs):
+    if created:  # 如果是第一次创建user对象，就创建一个visitor1对象进行绑定
+        Visitor1.objects.create(user=instance)
+    else:  # 如果是修改user对象，那么也要将visitor1进行保存
+        instance.visitor1.save()
+
+
 # information
 
 
@@ -235,6 +251,8 @@ def handler_user_extension(sender, instance, created, **kwargs):
         UserExtension1.objects.create(user=instance)
     else:  # 如果是修改user对象，那么也要将extension进行保存
         instance.extension.save()
+
+
 # old session
 
 
