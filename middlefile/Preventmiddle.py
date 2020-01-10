@@ -90,4 +90,4 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin):
                 Visitor1.objects.create(
                     user=request.user, session_key=request.session.get('sessionid'), ip=str(ip))
         else:
-            request.session['zz'] = 'zz'
+            return None
