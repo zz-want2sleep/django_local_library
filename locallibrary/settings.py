@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
-    'catalog.Preventmiddle.PreventConcurrentLoginsMiddleware',
+    'middlefile.Preventmiddle.PreventConcurrentLoginsMiddleware',
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
