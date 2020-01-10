@@ -1030,31 +1030,31 @@ def BulkCreateBookinstance(request, pk):
 # one user
 
 
-def is_thatone(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]  # 所以这里是真实的ip
-    else:
-        ip = request.META.get('REMOTE_ADDR')  # 这里获得代理ip
-    if request.user.is_authenticated:
-        key_from_cookie = request.session.session_key
-        # print(request.session.get('sessionid'))
-        # print(hasattr(request.user, 'visitor1'))
+# def is_thatone(request):
+#     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+#     if x_forwarded_for:
+#         ip = x_forwarded_for.split(',')[0]  # 所以这里是真实的ip
+#     else:
+#         ip = request.META.get('REMOTE_ADDR')  # 这里获得代理ip
+#     if request.user.is_authenticated:
+#         key_from_cookie = request.session.session_key
+#         # print(request.session.get('sessionid'))
+#         # print(hasattr(request.user, 'visitor1'))
 
-        if request.session.get('oldip',''):
-            if request.session.get('oldip') != str(ip):
-                # print(222)
-                return JsonResponse({'code': 0})
+#         if request.session.get('oldip',''):
+#             if request.session.get('oldip') != str(ip):
+#                 # print(222)
+#                 return JsonResponse({'code': 0})
             
-        if request.user.visitors.session_key != key_from_cookie:
-            # request.user.visitor1.session_key = key_from_cookie
-            # request.user.visitor1.save()
-            # print(1111)
-            return JsonResponse({'code': 2})
-        return JsonResponse({'code': 1})
+#         if request.user.visitors.session_key != key_from_cookie:
+#             # request.user.visitor1.session_key = key_from_cookie
+#             # request.user.visitor1.save()
+#             # print(1111)
+#             return JsonResponse({'code': 2})
+#         return JsonResponse({'code': 1})
 
-    else:
-        return JsonResponse({'code': 1})
+#     else:
+#         return JsonResponse({'code': 1})
 
 
 # statistical state统计

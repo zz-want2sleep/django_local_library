@@ -122,10 +122,10 @@ urlpatterns += [
          views.BulkCreateBookinstance, name="bulkcreatebookinstance"),
 ]
 # one user login
-urlpatterns += [
-    path('isthatone/',
-         views.is_thatone, name="isthatone"),
-]
+# urlpatterns += [
+#     path('isthatone/',
+#          views.is_thatone, name="isthatone"),
+# ]
 # statistical state统计
 urlpatterns += [
     path('statistical/', views.statistical, name="statistical")

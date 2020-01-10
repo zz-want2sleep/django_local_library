@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     # 'catalog',
     'testInput.apps.TestinputConfig',
     'django_apscheduler',
-    # 'preventconcurrentlogins',
+    'preventconcurrentlogins',
     'captcha',
 ]
 
@@ -63,8 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'middlefile.Preventmiddle.PreventConcurrentLoginsMiddleware',
-    # 'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
+    # 'middlefile.Preventmiddle.PreventConcurrentLoginsMiddleware',
+    'preventconcurrentlogins.middleware.PreventConcurrentLoginsMiddleware',
 ]
 
 ROOT_URLCONF = 'locallibrary.urls'
