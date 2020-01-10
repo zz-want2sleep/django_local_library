@@ -193,7 +193,7 @@ class HistoryByManager(models.Model):
 class Visitors(models.Model):
     user = models.OneToOneField(
         User, null=False, related_name='visitors', on_delete=models.CASCADE)
-    session_key = models.CharField(null=False, max_length=100)
+    session_key = models.CharField(null=True, max_length=100)
 
 
 class Visitor1(models.Model):
