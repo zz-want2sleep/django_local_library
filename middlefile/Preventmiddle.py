@@ -31,6 +31,7 @@ class PreventConcurrentLoginsMiddleware(deprecation.MiddlewareMixin):
             key_from_cookie = request.session.session_key
             if hasattr(request.user, 'visitors'):
                 if request.user.visitors.session_key == None:
+                    # print(111111111111)
                     request.user.visitors.session_key = key_from_cookie
                     request.user.visitors.save()
                 # print('zzzz1')
